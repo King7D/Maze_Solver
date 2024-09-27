@@ -5,22 +5,22 @@ app = Flask(__name__)
 # Function to generate an empty matrix with editable headers
 def generate_empty_matrix(x_size, y_size):
     grid_str = """
-    <table border='1' style='border-collapse: collapse;'>
+    <table border='1' style='border-collapse: collapse;' class='matrix'>
     <tr>
-        <td style='background-color: #003366; color: white;'></td>
+        <td class='header-cell'></td>
     """
     # Add input fields for column headers
     for x in range(x_size):
-        grid_str += f"<td style='background-color: #003366; color: white; padding: 10px; text-align: center; font-weight: bold;'>"
-        grid_str += f"<input type='number' name='cols_target{x}' value='' style='width: 40px; text-align: center;'></td>"
+        grid_str += f"<td class='header-cell'>"
+        grid_str += f"<input type='number' name='cols_target{x}' value='' class='header-input'></td>"
     grid_str += "</tr>"
 
     # Add rows with input fields for row headers and empty cells
     for y in range(y_size):
-        grid_str += f"<tr><td style='background-color: #003366; color: white; padding: 10px; text-align: center; font-weight: bold;'>"
-        grid_str += f"<input type='number' name='rows_target{y}' value='' style='width: 40px; text-align: center;'></td>"
+        grid_str += f"<tr><td class='header-cell'>"
+        grid_str += f"<input type='number' name='rows_target{y}' value='' class='header-input'></td>"
         for x in range(x_size):
-            grid_str += "<td style='background-color: #ADD8E6; padding: 10px; text-align: center;'> </td>"
+            grid_str += "<td class='cell'> </td>"
         grid_str += "</tr>"
     grid_str += "</table>"
     return grid_str
@@ -36,20 +36,20 @@ def print_solution_matrix(path, x_size, y_size, cols_target, rows_target):
     
     # Create an HTML table with the solution steps
     grid_str = """
-    <table border='1' style='border-collapse: collapse;'>
+    <table border='1' style='border-collapse: collapse;' class='matrix'>
     <tr>
-        <td style='background-color: #003366; color: white;'></td>
+        <td class='header-cell'></td>
     """
     # Column targets as headers
     for col in cols_target:
-        grid_str += f"<td style='background-color: #003366; color: white; padding: 10px; text-align: center; font-weight: bold;'>{col}</td>"
+        grid_str += f"<td class='header-cell'>{col}</td>"
     grid_str += "</tr>"
 
     # Row targets as headers with the solution steps in the cells
     for y, row in enumerate(grid):
-        grid_str += f"<tr><td style='background-color: #003366; color: white; padding: 10px; text-align: center; font-weight: bold;'>{rows_target[y]}</td>"
+        grid_str += f"<tr><td class='header-cell'>{rows_target[y]}</td>"
         for cell in row:
-            grid_str += f"<td style='background-color: #ADD8E6; padding: 10px; text-align: center;'>{cell}</td>"
+            grid_str += f"<td class='cell'>{cell}</td>"
         grid_str += "</tr>"
     grid_str += "</table>"
     return grid_str
@@ -165,9 +165,32 @@ html_template = """
         td {
             border: 1px solid #ccc;
         }
-        input[type="text"] {
+        .matrix {
+            table-layout: fixed;
             width: 100%;
+            max-width: 600px;
+        }
+        .header-cell {
+            background-color: #003366;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            width: 50px;
+            height: 50px;
+        }
+        .header-input {
+            width: 100%;
+            height: 100%;
             box-sizing: border-box;
+            text-align: center;
+        }
+        .cell {
+            background-color: #ADD8E6;
+            padding: 10px;
+            text-align: center;
+            width: 50px;
+            height: 50px;
         }
     </style>
 </head>
